@@ -1,13 +1,19 @@
 pipeline {
-    agent any
-
+    agent {
+        docker {
+            // Image contenant Maven et Git
+            image 'my-maven-git:latest'
+            // Pour réutiliser le cache Maven local entre builds
+            args '-v $HOME/.m2:/root/.m2'
+        }
+    }
     stages {
         stage('Checkout') {
             steps {
                 // clean the directory
                 sh "rm -rf *"
                 // Checkout the Git repository
-                sh "git clone https://github.com/simoks/java-maven.git"
+                sh "git clone https://github.com/ismail-aa/java-maven.git"
             }
         }
         stage('Build') {
@@ -31,4 +37,3 @@ pipeline {
         }
     }
 }
-
